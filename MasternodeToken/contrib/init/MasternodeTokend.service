@@ -1,0 +1,26 @@
+[Unit]
+Description=MasternodeToken's distributed currency daemon
+After=network.target
+
+[Service]
+User=MasternodeToken
+Group=MasternodeToken
+
+Type=forking
+PIDFile=/var/lib/MasternodeTokend/MasternodeTokend.pid
+
+ExecStart=/usr/bin/MasternodeTokend -daemon -pid=/var/lib/MasternodeTokend/MasternodeTokend.pid \
+          -conf=/etc/MasternodeToken/MasternodeToken.conf -datadir=/var/lib/MasternodeTokend
+
+ExecStop=-/usr/bin/MasternodeToken-cli -conf=/etc/MasternodeToken/MasternodeToken.conf \
+         -datadir=/var/lib/MasternodeTokend stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
